@@ -5,6 +5,7 @@ Demonstrates one second simple drive forward in setup
 // Jan!
 // Kristoffer!
 // rahim
+//dette er noe
 
 #include <ZumoMotors.h>
 #include <Pushbutton.h>
