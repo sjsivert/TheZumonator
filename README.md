@@ -1,13 +1,11 @@
 # TheZumonator
 # Prosjekt - lag en kamprobot
 ##  Gruppemedlemmer aka vinnerne
-
-    Rahimu Kasibante
-    Jan Hallvard Randahl
-    Sindre Johan Imenes Sivertsen
-    Eskild Hein Trøen
-    Kristoffer Hegge Østreim
-
+* Sindre J.I Sivertsen
+* Rahimu Kasibante
+* Jan Hallvard Randahl
+* Eskild Hein Trøen
+* Kristoffer Hegge Østreim
 
 ## Nyttige lenker:
 * [Plab Eksempelkode](https://github.com/IDI-PLab/plab-library/tree/master/PLabExamples/examples/14.Zumo)
