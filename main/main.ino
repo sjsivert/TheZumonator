@@ -17,6 +17,7 @@ Pushbuttom must be pressed to start Zumo.
 #include <ZumoMotors.h>
 #include <Pushbutton.h>
 #include <QTRSensors.h>
+#include <PLab_ZumoMotors.h>
 #include <ZumoReflectanceSensorArray.h>
 
 
@@ -31,6 +32,8 @@ Pushbuttom must be pressed to start Zumo.
 #define TURN_DURATION     300 // ms
 #define LEFT 1  // turn direction
 #define RIGHT 2
+
+PLab_ZumoMotors PLab_motors;
 
 const int echoPin = 0; 
 const int triggerPin = 1; 
@@ -67,26 +70,8 @@ void loop() {
   float distance = sonar.convert_cm(time);
   //
   // check if inside range for action
- if (! distance > 0) {
-   // No object in front
-   digitalWrite(ledPin,LOW); 
-   motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
- } else {
-   // Object detected
-   digitalWrite(ledPin,HIGH);
-   myServo.write(degreesServo);
-   degreesServo = degreesServo + degreesStep;
-   if (degreesServo > 180) {
-    degreesStep = -degreesStep;
-    degreesServo = 180;
-   } else if (degreesServo < 0) {
-    degreesStep = -degreesStep;
-    degreesServo = 0;
-  }  
-    // Trun away from object
-    motors.setSpeeds(-2*FORWARD_SPEED,2*FORWARD_SPEED);
- }
-   // Read IR-sensors and check if border detected
+  for(int i=0; i<120; i++){
+      // Read IR-sensors and check if border detected
    sensors.read(sensor_values);
   if (sensor_values[0] < QTR_THRESHOLD)
   {
@@ -98,6 +83,56 @@ void loop() {
      // if rightmost sensor detects line, reverse and turn to the left
     turn(LEFT);
   }
+    myServo.write(i);
+      if (! distance > 0) {
+   // No object in front
+   digitalWrite(ledPin,LOW); 
+   motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
+ } else {
+   // Object detected
+   digitalWrite(ledPin,HIGH);
+  if(i<60){
+    PLab_motors.turnRight(FORWARD_SPEED, i);    
+  }
+  else{
+    PLab_motors.turnLeft(FORWARD_SPEED, i);  
+  }
+  motors.setSpeeds(400,400);
+  delay(800);
+ }
+  }
+  for(int i=120; i>0; i--){
+      // Read IR-sensors and check if border detected
+   sensors.read(sensor_values);
+  if (sensor_values[0] < QTR_THRESHOLD)
+  {
+    // if leftmost sensor detects line, reverse and turn to the right
+    turn(RIGHT);
+  }
+  if (sensor_values[5] < QTR_THRESHOLD)
+  {
+     // if rightmost sensor detects line, reverse and turn to the left
+    turn(LEFT);
+  }
+    myServo.write(i);
+    if (! distance > 0) {
+   // No object in front
+   digitalWrite(ledPin,LOW); 
+   motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
+ } else {
+   // Object detected
+   digitalWrite(ledPin,HIGH);
+  if(i<60){
+    PLab_motors.turnRight(FORWARD_SPEED, i);    
+  }
+  else{
+    PLab_motors.turnLeft(FORWARD_SPEED, i);  
+  }
+  motors.setSpeeds(400,400);
+  delay(800);
+ }
+  }
+
 }
 
 void turn(int direction){ 
