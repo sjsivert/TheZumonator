@@ -10,7 +10,6 @@ Pushbuttom must be pressed to start Zumo.
     LED:    ledPin = 2 
     Servo:  servoPin = 6
     
-                        Asbjørn Thommasen - 2015
 */
 #include <NewPing.h>
 #include <NewServo.h>
@@ -36,11 +35,11 @@ Pushbuttom must be pressed to start Zumo.
 const int echoPin = 0; 
 const int triggerPin = 1; 
 // Max distance (in cm) of interest
-const int maxDistance = 20;  
+const int maxDistance = 37;  
 const int ledPin = 2;
 const int servoPin = 6;
 // Servo start position degrees and Increments in servo movement
-int degreesServo = 0; 
+int degreesServo = 90; 
 int degreesStep = 30;   
 
 #define NUM_SENSORS 6
