@@ -27,7 +27,7 @@ Pushbuttom must be pressed to start Zumo.
 // these might need to be tuned for different motor types
 #define REVERSE_SPEED     200 // 0 is stopped, 400 is full speed
 #define TURN_SPEED        200
-#define FORWARD_SPEED     100
+#define FORWARD_SPEED     240
 #define REVERSE_DURATION  200 // ms
 #define TURN_DURATION     300 // ms
 #define LEFT 1  // turn direction
@@ -38,12 +38,10 @@ PLab_ZumoMotors PLab_motors;
 const int echoPin = 0; 
 const int triggerPin = 1; 
 // Max distance (in cm) of interest
-const int maxDistance = 37;  
+const int maxDistance = 40;  
 const int ledPin = 2;
 const int servoPin = 6;
-// Servo start position degrees and Increments in servo movement
-int degreesServo = 90; 
-int degreesStep = 30;   
+const int mid = 73;
 
 #define NUM_SENSORS 6
 unsigned int sensor_values[NUM_SENSORS];
@@ -61,12 +59,13 @@ void setup() {
    pinMode(ledPin,OUTPUT);
    myServo.attach(servoPin); 
    button.waitForButton();
-   motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
+   //motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
 }
 
 void loop() {
-  motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
-  keepLines();
+  //motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
+  //servoSweepAndKeepLines()
+  servoSweepTest();
 }
 
 void keepLines(){
@@ -84,30 +83,78 @@ void keepLines(){
   }
 }
 
-void servoSweep(){
-   for(int i=0; i<120; i++){
+void servoSweepAndKeepLines(){
+  //Sweep left
+  for(int i=0; i<163; i+=82){
+  keepLines();
   myServo.write(i);
   unsigned int time = sonar.ping();
   float distance = sonar.convert_cm(time);
-  if (! distance > 0) {
+  if (!distance > 0) {
    // No object in front
    digitalWrite(ledPin,LOW); 
    motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
- } else {
+ } 
+ else {
    // Object detected
    digitalWrite(ledPin,HIGH);
-  if(i<60){
-    PLab_motors.turnRight(FORWARD_SPEED, i);    
-  }
-  else{
-    PLab_motors.turnLeft(FORWARD_SPEED, i);  
-  }
-  motors.setSpeeds(400,400);
-  delay(800);
+   delay(500);
+   digitalWrite(ledPin,LOW);
+ }
+ }
+ //Sweep right
+  for(int i=162; i>-1; i-=82){
+  keepLines();
+  myServo.write(i);
+  unsigned int time = sonar.ping();
+  float distance = sonar.convert_cm(time);
+  if (!distance > 0) {
+   digitalWrite(ledPin,LOW); 
+   motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
+ } 
+ else {
+   digitalWrite(ledPin,HIGH);
+   delay(500);
+   digitalWrite(ledPin,LOW);
+ }
+ }
+}
+  
+
+void servoSweepTest(){
+  //Sweep left
+  for(int i=0; i<163; i+=41){
+  myServo.write(i);
+  unsigned int time = sonar.ping();
+  float distance = sonar.convert_cm(time);
+  if (!distance > 0) {
+   // No object in front
+   digitalWrite(ledPin,LOW); 
+ } 
+ else {
+   // Object detected
+   digitalWrite(ledPin,HIGH);
+   delay(500);
+   digitalWrite(ledPin,LOW);
+ }
+ }
+ //Sweep right
+  for(int i=162; i>-1; i-=41){
+  myServo.write(i);
+  unsigned int time = sonar.ping();
+  float distance = sonar.convert_cm(time);
+  if (!distance > 0) {
+   // No object in front
+   digitalWrite(ledPin,LOW); 
+ } 
+ else {
+   // Object detected
+   digitalWrite(ledPin,HIGH);
+   delay(500);
+   digitalWrite(ledPin,LOW);
  }
   }
 }
-  
 
 void turn(int direction){ 
 //
