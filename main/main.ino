@@ -59,13 +59,11 @@ void setup() {
    pinMode(ledPin,OUTPUT);
    myServo.attach(servoPin); 
    button.waitForButton();
-   //motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
 }
 
 void loop() {
-  //motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
-  //servoSweepAndKeepLines()
-  servoSweepTest();
+  motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
+  servoSweepAndKeepLines();
 }
 
 void keepLines(){
@@ -85,7 +83,7 @@ void keepLines(){
 
 void servoSweepAndKeepLines(){
   //Sweep left
-  for(int i=0; i<163; i+=82){
+  for(int i=0; i<163; i+=41){
   keepLines();
   myServo.write(i);
   unsigned int time = sonar.ping();
@@ -98,12 +96,10 @@ void servoSweepAndKeepLines(){
  else {
    // Object detected
    digitalWrite(ledPin,HIGH);
-   delay(500);
-   digitalWrite(ledPin,LOW);
  }
  }
  //Sweep right
-  for(int i=162; i>-1; i-=82){
+  for(int i=162; i>-1; i-=41){
   keepLines();
   myServo.write(i);
   unsigned int time = sonar.ping();
@@ -114,8 +110,6 @@ void servoSweepAndKeepLines(){
  } 
  else {
    digitalWrite(ledPin,HIGH);
-   delay(500);
-   digitalWrite(ledPin,LOW);
  }
  }
 }
