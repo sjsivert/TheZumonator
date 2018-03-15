@@ -38,7 +38,7 @@ PLab_ZumoMotors PLab_motors;
 const int echoPin = 0;
 const int triggerPin = 1;
 // Max distance (in cm) of interest
-const int maxDistance = 40;
+const int maxDistance = 70;
 const int ledPin = 2;
 const int servoPin = 6;
 const int mid = 73;
@@ -96,6 +96,7 @@ void servoSweepAndKeepLines(){
     else {
       // Object detected
       digitalWrite(ledPin,HIGH);
+      kill(i);
     }
  }
   //Sweep right
@@ -110,6 +111,7 @@ void servoSweepAndKeepLines(){
     }
     else {
       digitalWrite(ledPin,HIGH);
+      kill(i);
     }
  }
 }
@@ -146,6 +148,20 @@ void servoSweepTest(){
    delay(500);
    digitalWrite(ledPin,LOW);
  }
+  }
+}
+
+void kill(int i){
+  if(i<=73){
+    PLab_motors.turnRight(TURN_SPEED, 73-i);
+  }
+  else{
+    PLab_motors.turnLeft(TURN_SPEED, i-73);
+  }
+  motors.setSpeeds(400, 400);
+  for(int k=0; k< 500; k++){
+    delay(1);
+    keepLines();
   }
 }
 
