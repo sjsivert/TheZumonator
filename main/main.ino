@@ -65,78 +65,52 @@ void setup() {
 }
 
 void loop() {
-  // Read distance to obstacle, if any 
-  unsigned int time = sonar.ping();
-  float distance = sonar.convert_cm(time);
-  //
-  // check if inside range for action
-  for(int i=0; i<120; i++){
-      // Read IR-sensors and check if border detected
-   sensors.read(sensor_values);
-  if (sensor_values[0] < QTR_THRESHOLD)
-  {
-    // if leftmost sensor detects line, reverse and turn to the right
-    turn(RIGHT);
-  }
-  if (sensor_values[5] < QTR_THRESHOLD)
-  {
-     // if rightmost sensor detects line, reverse and turn to the left
-    turn(LEFT);
-  }
-    myServo.write(i);
-      if (! distance > 0) {
-   // No object in front
-   digitalWrite(ledPin,LOW); 
-   motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
- } else {
-   // Object detected
-   digitalWrite(ledPin,HIGH);
-  if(i<60){
-    PLab_motors.turnRight(FORWARD_SPEED, i);    
-  }
-  else{
-    PLab_motors.turnLeft(FORWARD_SPEED, i);  
-  }
-  motors.setSpeeds(400,400);
-  delay(800);
- }
-  }
-  for(int i=120; i>0; i--){
-      // Read IR-sensors and check if border detected
-   sensors.read(sensor_values);
-  if (sensor_values[0] < QTR_THRESHOLD)
-  {
-    // if leftmost sensor detects line, reverse and turn to the right
-    turn(RIGHT);
-  }
-  if (sensor_values[5] < QTR_THRESHOLD)
-  {
-     // if rightmost sensor detects line, reverse and turn to the left
-    turn(LEFT);
-  }
-    myServo.write(i);
-    if (! distance > 0) {
-   // No object in front
-   digitalWrite(ledPin,LOW); 
-   motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
- } else {
-   // Object detected
-   digitalWrite(ledPin,HIGH);
-  if(i<60){
-    PLab_motors.turnRight(FORWARD_SPEED, i);    
-  }
-  else{
-    PLab_motors.turnLeft(FORWARD_SPEED, i);  
-  }
-  motors.setSpeeds(400,400);
-  delay(800);
- }
-  }
-
+  motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
+  keepLines();
 }
 
+void keepLines(){
+       // Read IR-sensors and check if border detected
+   sensors.read(sensor_values);
+  if (sensor_values[0] < QTR_THRESHOLD)
+  {
+    // if leftmost sensor detects line, reverse and turn to the right
+    turn(RIGHT);
+  }
+  if (sensor_values[5] < QTR_THRESHOLD)
+  {
+     // if rightmost sensor detects line, reverse and turn to the left
+    turn(LEFT);
+  }
+}
+
+void servoSweep(){
+   for(int i=0; i<120; i++){
+  myServo.write(i);
+  unsigned int time = sonar.ping();
+  float distance = sonar.convert_cm(time);
+  if (! distance > 0) {
+   // No object in front
+   digitalWrite(ledPin,LOW); 
+   motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
+ } else {
+   // Object detected
+   digitalWrite(ledPin,HIGH);
+  if(i<60){
+    PLab_motors.turnRight(FORWARD_SPEED, i);    
+  }
+  else{
+    PLab_motors.turnLeft(FORWARD_SPEED, i);  
+  }
+  motors.setSpeeds(400,400);
+  delay(800);
+ }
+  }
+}
+  
+
 void turn(int direction){ 
-  //
+//
 // Move Zumo backwards, then turn in given direction,
 // and continue forward
 //
