@@ -44,6 +44,8 @@ const int servoPin = 6;
 const int mid = 73;
 int counter;
 
+boolean turnt = false;
+
 #define NUM_SENSORS 6
 unsigned int sensor_values[NUM_SENSORS];
 // Initialize "sonar" with trigger pin, echo pin and max distance,
@@ -82,6 +84,23 @@ void keepLines(){
   }
 }
 
+void killKeepLines(){
+  // Read IR-sensors and check if border detected
+  sensors.read(sensor_values);
+  if (sensor_values[0] < QTR_THRESHOLD)
+  {
+    // if leftmost sensor detects line, reverse and turn to the right
+    turn(RIGHT);
+    turnt = true;
+  }
+  if (sensor_values[5] < QTR_THRESHOLD)
+  {
+     // if rightmost sensor detects line, reverse and turn to the left
+    turn(LEFT);
+    turnt = true;
+  }
+}
+
 void servoSweepAndKeepLines(){
   //Sweep left
   for(int i=0; i<163; i+=41){
@@ -98,7 +117,6 @@ void servoSweepAndKeepLines(){
       // Object detected
       digitalWrite(ledPin,HIGH);
       kill(i);
-    }
  }
   //Sweep right
   for(int i=162; i>-1; i-=41){
@@ -163,7 +181,11 @@ void kill(int i){
   motors.setSpeeds(400, 400);
   for(int k=0; k< 500; k++){
     delay(1);
-    keepLines();
+    killKeepLines();
+    if(turnt == true){
+          turnt = false;
+          return;
+    }
   }
 }
 
