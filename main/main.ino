@@ -26,8 +26,8 @@ Pushbuttom must be pressed to start Zumo.
 
 // these might need to be tuned for different motor types
 #define REVERSE_SPEED     200 // 0 is stopped, 400 is full speed
-#define TURN_SPEED        200
-#define FORWARD_SPEED     240
+int TURN_SPEED    =   200;
+#define FORWARD_SPEED     300
 #define REVERSE_DURATION  200 // ms
 #define TURN_DURATION     300 // ms
 #define LEFT 1  // turn direction
@@ -38,10 +38,11 @@ PLab_ZumoMotors PLab_motors;
 const int echoPin = 0;
 const int triggerPin = 1;
 // Max distance (in cm) of interest
-const int maxDistance = 70;
+const int maxDistance = 30;
 const int ledPin = 2;
 const int servoPin = 6;
 const int mid = 73;
+int counter;
 
 #define NUM_SENSORS 6
 unsigned int sensor_values[NUM_SENSORS];
@@ -59,10 +60,10 @@ void setup() {
    pinMode(ledPin,OUTPUT);
    myServo.attach(servoPin);
    button.waitForButton();
+   motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
 }
 
 void loop() {
-  motors.setSpeeds(FORWARD_SPEED,FORWARD_SPEED);
   servoSweepAndKeepLines();
 }
 
@@ -114,6 +115,7 @@ void servoSweepAndKeepLines(){
       kill(i);
     }
  }
+ counter++;
 }
 
 void servoSweepTest(){
@@ -166,6 +168,7 @@ void kill(int i){
 }
 
 void turn(int direction){
+  TURN_SPEED = random(200,350);
 //
 // Move Zumo backwards, then turn in given direction,
 // and continue forward
@@ -177,7 +180,10 @@ void turn(int direction){
     delay(REVERSE_DURATION);
     motors.setSpeeds(TURN_SPEED, -TURN_SPEED);
     delay(TURN_DURATION);
-    motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
+    for(int l=225; l<300; l++){
+       motors.setSpeeds(l, l);
+       keepLines();
+    }
   }
   else // turn left
   {
@@ -185,6 +191,9 @@ void turn(int direction){
     delay(REVERSE_DURATION);
     motors.setSpeeds(-TURN_SPEED, TURN_SPEED);
     delay(TURN_DURATION);
-    motors.setSpeeds(FORWARD_SPEED, FORWARD_SPEED);
+     for(int l=225; l<301; l++){
+       motors.setSpeeds(l, l);
+       keepLines();
+    }
   }
 }
