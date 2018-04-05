@@ -1,5 +1,7 @@
 # TheZumonator
 # Prosjekt - lag en kamprobot
+![Bilde 1](IMG_20180405_162204.jpg)
+![Bilde 2](IMG_20180405_162210.jpg)
 ##  Gruppemedlemmer aka vinnerne
 * Sindre J.I Sivertsen
 * Rahimu Kasibante
