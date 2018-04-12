@@ -22,12 +22,12 @@ Pushbuttom must be pressed to start Zumo.
 
 
 // this might need to be tuned for different lighting conditions, surfaces, etc.
-#define QTR_THRESHOLD  1900 //
+#define QTR_THRESHOLD  1000 //
 
 // these might need to be tuned for different motor types
 #define REVERSE_SPEED     200 // 0 is stopped, 400 is full speed
 int TURN_SPEED    =   200;
-#define FORWARD_SPEED     300
+#define FORWARD_SPEED     250
 #define REVERSE_DURATION  200 // ms
 #define TURN_DURATION     300 // ms
 #define LEFT 1  // turn direction
@@ -117,6 +117,7 @@ void servoSweepAndKeepLines(){
       // Object detected
       digitalWrite(ledPin,HIGH);
       kill(i);
+    }
  }
   //Sweep right
   for(int i=162; i>-1; i-=41){
